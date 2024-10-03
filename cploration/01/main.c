@@ -106,19 +106,17 @@ int sum(int arr[], int n)
  *
  */
 double pie(long int n){
-    // write basic Leibniz formula
-    // we want to keep looping until we have enough terms
-    // return 1 - 1/3 + 1/5 - 1/7
+    // Leibniz formula
+    //    π/4 = 1 - 1/3 + 1/5 - 1/7 + 1/9 - ...
     int operation_sign = 1;
-    int pi = 0;
+    double pi_divided_by_4 = 0;
     for (int i = 0; i < n; i++) {
-        operation_sign = -operation_sign;
-
-        // create the denominator based on i
         int denominator = (2 * i) + 1;
-        pi += operation_sign*1/denominator;
+        pi_divided_by_4 += operation_sign*1.0/denominator;
+        // Change operation sign for next operation
+        operation_sign = -operation_sign;
     }
-
+    double pi = pi_divided_by_4 * 4;
     return pi;
 }
 
