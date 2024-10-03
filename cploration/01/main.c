@@ -43,10 +43,6 @@ int add(int n)
  */
 int fib(int n)
 {
-    // If n is 0, 0
-    // if n is 1, 1
-
-
     if (n == 0) {
         return 0;
     }
@@ -69,8 +65,13 @@ int fib(int n)
  */
 int max(int arr[], int n)
 {
-    /** Your CODE here **/
-    return 0;
+    int current_max = 0;
+    for (int i = 0; i < n; i++) {
+        if (arr[i] > current_max) {
+            current_max = arr[i];
+        }
+    }
+    return current_max;
 }
 
 /* Function: sum
@@ -85,8 +86,11 @@ int max(int arr[], int n)
  */
 int sum(int arr[], int n)
 {
-    /** Your CODE here **/
-    return 0;
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += arr[i];
+    }
+    return sum;
 }
 
 
@@ -102,8 +106,20 @@ int sum(int arr[], int n)
  *
  */
 double pie(long int n){
-    /** Your CODE here **/
-    return 0.0;
+    // write basic Leibniz formula
+    // we want to keep looping until we have enough terms
+    // return 1 - 1/3 + 1/5 - 1/7
+    int operation_sign = 1;
+    int pi = 0;
+    for (int i = 0; i < n; i++) {
+        operation_sign = -operation_sign;
+
+        // create the denominator based on i
+        int denominator = (2 * i) + 1;
+        pi += operation_sign*1/denominator;
+    }
+
+    return pi;
 }
 
 
