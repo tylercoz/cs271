@@ -25,9 +25,7 @@ int add(int n)
     int sum = 0;
     for (int i = 0; i <= n; i++) {
         sum += i;
-        printf("i = %d\n", i);
     }
-
     return sum;
 }
 
