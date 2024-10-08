@@ -1,9 +1,9 @@
 /****************************************
  * C-ploration 2 for CS 271
- * 
+ *
  * [NAME] $YOUR_NAME$
  * [TERM] FALL $YEAR$
- * 
+ *
  ****************************************/
 
 #include <stdio.h>
@@ -25,10 +25,10 @@
  */
 int length(char* txt) {
 	int len = 0;
-	
-	/* REPLACE WITH YOUR CODE */
 
-	return len;  
+	// TODO
+
+	return len;
 }
 
 
@@ -43,15 +43,15 @@ int length(char* txt) {
  * hello: string containing "hello"
  * name: string containing the name
  *
- * returns: "Hello NAME!", based on a given NAME 
+ * returns: "Hello NAME!", based on a given NAME
  */
 char *welcome(char* hello, char* name) {
 	// dynamically allocate a new string
 	char *message = malloc(sizeof(char)*MAX_LIMIT);
-		
+
 	/* REPLACE WITH YOUR CODE */
-	
-	return message;	
+
+	return message;
 }
 
 
@@ -68,7 +68,7 @@ char *welcome(char* hello, char* name) {
 void reverse(char* txt, char* result) {
 
 	/* REPLACE WITH YOUR CODE */
-	
+
 }
 
 
@@ -107,7 +107,7 @@ int vowels(char* txt) {
 int quartile(char* name) {
 
 	/* REPLACE WITH YOUR CODE */
-	
+
 	return -1; // <==fix!
 }
 
@@ -119,7 +119,7 @@ int quartile(char* name) {
  * =========================
  * DO NOT EDIT MAIN FUNCTION
  * =========================
- * 
+ *
  * argc: number of arguments
  * argv: array of arguments (array of array of chars)
  *
@@ -131,55 +131,55 @@ int main(int argc, char** argv)
 	char hello[] = "Hello";
 	// declare an empty string of max size
 	char name[MAX_LIMIT];
-	
+
 	// prompt user for name
 	printf("What is your name? ");
 	// the [^\n] means to discard the newline character
-	scanf("%[^\n]s", name);  
+	scanf("%[^\n]s", name);
 	// make sure name starts with a capital letter
 	name[0] = toupper((unsigned char)name[0]);
-	
+
 	// when no arguments given
 	if (argc < 2){
 		// Task 1: display welcome
 		char *greeting = welcome(hello, name);
 		printf("%s\n", greeting);
 
-		// Task 2: count characters 
+		// Task 2: count characters
 		int len = length(name);
 		printf("%s is %d characters long.\n", name, len);
-		
+
 		// Task 3: reverse string
-		char backwards[length(name)]; 
+		char backwards[length(name)];
 		reverse(name, backwards);
 		printf("%s backwards is %s.\n", name, backwards);
-		
+
 		// Task 4: count vowels
-		printf("%s contains %d vowels.\n", name, vowels(name));	
-		
+		printf("%s contains %d vowels.\n", name, vowels(name));
+
 		// Task 5: find which quarter of the alphabet
-		printf("%s is in quartile #%d alphabetically.", name, quartile(name));		
+		printf("%s is in quartile #%d alphabetically.", name, quartile(name));
 	}else{
 		/******************************
 		 *  USED BY GRADESCOPE TESTS  *
 		 *****************************/
-		if (!strcmp(argv[1], "-count")){ 
+		if (!strcmp(argv[1], "-count")){
 			printf("%d\n", length(name));
-		}else if (!strcmp(argv[1], "-greeting")){ 
-			printf("%s\n", welcome(hello, name));			
-		}else if (!strcmp(argv[1], "-reverse")){ 
-			char backwards[length(name)]; 
+		}else if (!strcmp(argv[1], "-greeting")){
+			printf("%s\n", welcome(hello, name));
+		}else if (!strcmp(argv[1], "-reverse")){
+			char backwards[length(name)];
 			reverse(name, backwards);
 			printf("%s\n", backwards);
-		}else if (!strcmp(argv[1], "-vowel")){ 
-			printf("%d\n", vowels(name));				
-		}else if (!strcmp(argv[1], "-quartile")){ 
-			printf("%d\n", quartile(name));			
+		}else if (!strcmp(argv[1], "-vowel")){
+			printf("%d\n", vowels(name));
+		}else if (!strcmp(argv[1], "-quartile")){
+			printf("%d\n", quartile(name));
 		}else{
 			// incorrect command, exit with error
 			fprintf(stderr, "[error] Unknown command %s.\n", argv[1]);
 			return 1;
-		}		
+		}
 	}
     return 0;
 }
