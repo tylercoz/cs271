@@ -1,8 +1,8 @@
 /****************************************
  * C-ploration 2 for CS 271
  *
- * [NAME] $YOUR_NAME$
- * [TERM] FALL $YEAR$
+ * [NAME] Tyler Cozzocrea
+ * [TERM] FALL 2024
  *
  ****************************************/
 
@@ -23,7 +23,7 @@
  *
  * returns: the length of the string
  */
-int length(char* txt) {
+int length(const char* txt) {
 	int len = 0;
 	int i = 0;
 
@@ -49,7 +49,7 @@ int length(char* txt) {
  *
  * returns: "Hello NAME!", based on a given NAME
  */
-char *welcome(char* hello, char* name) {
+char *welcome(const char* hello, const char* name) {
 	// dynamically allocate a new string
 	char *message = malloc(sizeof(char)*MAX_LIMIT);
 
@@ -72,7 +72,7 @@ char *welcome(char* hello, char* name) {
  *
  * returns: nothing. result contains the reversed string.
  */
-void reverse(char* txt, char* result) {
+void reverse(const char* txt, char* result) {
     int len = length(txt);
     int i = len - 1;
     int j = 0;
@@ -93,7 +93,7 @@ void reverse(char* txt, char* result) {
  *
  * returns: integer count of vowels
  */
-int vowels(char* txt) {
+int vowels(const char* txt) {
     int vowel = 0;
     char possible_vowels[] = {'a', 'e', 'i', 'o', 'u',
                               'A', 'E', 'I', 'O', 'U'};
@@ -124,7 +124,7 @@ int vowels(char* txt) {
  *
  * returns: integer quarter [1..4]
  */
-int quartile(char* name) {
+int quartile(const char* name) {
     // Compares first letter of name to ASCII values of characters,
     // finds what quartile of the alphabet the name is in.
 
