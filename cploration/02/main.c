@@ -125,10 +125,41 @@ int vowels(char* txt) {
  * returns: integer quarter [1..4]
  */
 int quartile(char* name) {
+    // Compares first letter of name to ASCII values of characters,
+    // finds what quartile of the alphabet the name is in.
 
-	/* REPLACE WITH YOUR CODE */
+    char first_letter = name[0];
 
-	return -1; // <==fix!
+    if ((first_letter <=64) || (first_letter >= 123)) {
+        printf("Invalid first letter. Only the standard\
+                English alphabet is allowed.");
+        exit(EXIT_FAILURE);
+    }
+
+    // If the first letter is capitalized
+    if ((first_letter >= 65) && (first_letter <= 90)) {
+        // Let's make it lowercase
+        first_letter = first_letter + 32;
+    }
+
+    // A-F
+    if (first_letter <=102) {
+        return 1;
+    }
+    // G-L
+    if (first_letter <=108) {
+        return 2;
+    }
+    // M-R
+    if (first_letter <=114) {
+        return 3;
+    }
+    // S-Z
+    if (first_letter <=122) {
+        return 4;
+    }
+    printf("\nNo quartile found.\n");
+    return -1;
 }
 
 
