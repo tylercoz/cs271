@@ -94,9 +94,17 @@ void reverse(char* txt, char* result) {
  * returns: integer count of vowels
  */
 int vowels(char* txt) {
-	int vowel = 0;
+    int vowel = 0;
+    char possible_vowels[] = {'a', 'e', 'i', 'o', 'u',
+                              'A', 'E', 'I', 'O', 'U'};
 
-	/* REPLACE WITH YOUR CODE */
+    for (int i = 0; i < length(txt); i++) {
+        for (int j = 0; j < length(possible_vowels); j++) {
+            if (possible_vowels[j] == txt[i]) {
+                vowel++;
+            }
+        }
+    }
 
 	return vowel;
 }
