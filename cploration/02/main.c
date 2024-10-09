@@ -25,8 +25,12 @@
  */
 int length(char* txt) {
 	int len = 0;
+	int i = 0;
 
-	// code here
+	while (txt[i] != '\0') {
+    	len++;
+    	i++;
+	}
 
 	return len;
 }
