@@ -136,26 +136,20 @@ int quartile(char* name) {
         exit(EXIT_FAILURE);
     }
 
-    // If the first letter is capitalized
-    if ((first_letter >= 65) && (first_letter <= 90)) {
-        // Let's make it lowercase
-        first_letter = first_letter + 32;
-    }
-
     // A-F
-    if (first_letter <=102) {
+    if (first_letter <= 'F') {
         return 1;
     }
     // G-L
-    if (first_letter <=108) {
+    if (first_letter <= 'L') {
         return 2;
     }
     // M-R
-    if (first_letter <=114) {
+    if (first_letter <= 'R') {
         return 3;
     }
     // S-Z
-    if (first_letter <=122) {
+    if (first_letter <= 'Z') {
         return 4;
     }
     printf("\nNo quartile found.\n");
