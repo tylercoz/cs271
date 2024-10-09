@@ -26,7 +26,7 @@
 int length(char* txt) {
 	int len = 0;
 
-	// TODO
+	// code here
 
 	return len;
 }
@@ -49,7 +49,10 @@ char *welcome(char* hello, char* name) {
 	// dynamically allocate a new string
 	char *message = malloc(sizeof(char)*MAX_LIMIT);
 
-	/* REPLACE WITH YOUR CODE */
+	strcat(message, hello);
+	strcat(message, " ");
+	strcat(message, name);
+	strcat(message, "!");
 
 	return message;
 }
