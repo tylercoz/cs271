@@ -14,5 +14,8 @@ CHIP Mux4Way16 {
     OUT out[16];
     
     PARTS:
-    //// Replace this comment with your code.
+        And(a=sel[0], b=b, out=z);
+        Not(in=sel, out=notSel);
+        And(a=a, b=notSel, out=y);
+        Or(a=y, b=z, out=out);
 }
