@@ -130,25 +130,21 @@ int quartile(const char* name) {
 
     char first_letter = name[0];
 
-    if ((first_letter <=64) || (first_letter >= 123)) {
+    if ((first_letter < 'A') || (first_letter > 'z')) {
         printf("Invalid first letter. Only the standard\
                 English alphabet is allowed.");
         exit(EXIT_FAILURE);
     }
 
-    // A-F
     if (first_letter <= 'F') {
         return 1;
     }
-    // G-L
     if (first_letter <= 'L') {
         return 2;
     }
-    // M-R
     if (first_letter <= 'R') {
         return 3;
     }
-    // S-Z
     if (first_letter <= 'Z') {
         return 4;
     }
