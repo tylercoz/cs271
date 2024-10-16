@@ -1,2 +1,2 @@
-main: main.c 
-	gcc -Wall -pedantic -I. -o main main.c
+main: main.c
+	gcc -g -Wall -pedantic -I. -o main main.c
