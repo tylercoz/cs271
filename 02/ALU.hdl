@@ -41,5 +41,55 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    //// Replace this comment with your code.
+      // Zero out x input...
+      Or16(a=x, b=true, out=xAllOnes);
+      Not16(in=xAllOnes, out=xZERO);
+      // ... if zx = 1
+      Mux16(a=x, b=xZERO, sel=zx, out=zxOUT);
+
+      // Negate x input...
+      Not16(in=zxOUT, out=negateZxOUT);
+      // ... if nx = 1
+      Mux16(a=zxOUT, b=negateZxOUT, sel=nx, out=zxnxOUT);
+
+      // Zero out y input...
+      Or16(a=y, b=true, out=yAllOnes);
+      Not16(in=yAllOnes, out=yZERO);
+      // ... if zy = 1
+      Mux16(a=y, b=yZERO, sel=zy, out=zyOUT);
+
+      // Negate y input...
+      Not16(in=zyOUT, out=negateZyOUT);
+      // ... if ny = 1
+      Mux16(a=zyOUT, b=negateZyOUT, sel=ny, out=zynyOUT);
+
+      // x + y 
+      Add16(a=zxnxOUT, b=zynyOUT, out=AddZNOut);
+
+      // x & y
+      And16(a=zxnxOUT, b=zynyOUT, out=AndZNOut);
+
+      // (x + y) if f == 1, else x & y
+      Mux16(a=AndZNOut, b=AddZNOut, sel=f, out=FAddAndZNOut);
+
+      // negate (x + y) || (x & y)...
+      Not16(in=FAddAndZNOut, out=NFAddAndZNOut);
+
+      // ... if no = 1
+      Mux16(a=FAddAndZNOut, b=NFAddAndZNOut, sel=no, out=finaloutput);
+      And16(a=finaloutput, b=true, out=out);
+
+      // zr
+      And16(a=finaloutput, b=true, out[0..7]=zrFirstHalf);
+      And16(a=finaloutput, b=true, out[8..15]=zrSecondHalf);
+      Or8Way(in=zrFirstHalf, out=zrFirstHalfOR);
+      Or8Way(in=zrSecondHalf, out=zrSecondHalfOR);
+      Or(a=zrFirstHalfOR, b=zrSecondHalfOR, out=nout);
+      Not(in=nout, out=zr);
+
+
+      // ng
+      And16(a=finaloutput, b[15]=true, out[15]=ng);
+
+
 }
