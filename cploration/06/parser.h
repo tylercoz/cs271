@@ -28,3 +28,16 @@ bool is_label(const char *);
 bool is_Ctype(const char *);
 
 char *extract_label(const char *line, char* label);
+
+enum instr_type {
+    Invalid = -1,
+    Atype,
+    Ctype
+};
+
+struct c_instruction {
+    opcode a:1;
+    opcode c:6;
+    opcode d:3;
+    opcode j:3;
+};
