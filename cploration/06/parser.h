@@ -29,15 +29,31 @@ bool is_Ctype(const char *);
 
 char *extract_label(const char *line, char* label);
 
-enum instr_type {
+typedef enum {
     Invalid = -1,
     Atype,
     Ctype
-};
+} instr_type;
 
-struct c_instruction {
+typedef struct {
     opcode a:1;
     opcode c:6;
     opcode d:3;
     opcode j:3;
-};
+} c_instruction;
+
+typedef struct {
+    union {
+        int address;
+        char *label;
+    } a_instruction;
+    bool is_addr;
+} a_instruction;
+
+typedef struct {
+    union {
+        a_instruction a;
+        c_instruction c;
+    };
+    instr_type instruction_type;
+} instruction;
