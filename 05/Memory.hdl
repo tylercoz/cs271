@@ -14,8 +14,8 @@
  * available through the out output from the next time step onward.
  * Address space rules:
  * Only the upper 16K+8K+1 words of the Memory chip are used. 
- * Access to address>0x6000 is invalid. Access to any address in 
- * the range 0x4000-0x5FFF results in accessing the screen memory 
+ * Access to address>0x6000 is invalid and reads 0. Access to any address
+ * in the range 0x4000-0x5FFF results in accessing the screen memory 
  * map. Access to address 0x6000 results in accessing the keyboard 
  * memory map. The behavior in these addresses is described in the Screen
  * and Keyboard chip specifications given in the lectures and the book.
@@ -25,5 +25,29 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-	//// Replace this comment with your code.
+        // Only output KBD if all the bits are 0 except for two MSB.
+        // Else, KBD's output will be 0.
+        Or8Way(in=address[0..7], out=or8);
+        Or(a=or8, b=address[8], out=or9);
+        Or(a=or9, b=address[9], out=or10);
+        Or(a=or10, b=address[10], out=or11);
+        Or(a=or11, b=address[11], out=or12);
+        Or(a=or12, b=address[12], out=or13);
+        Mux16(a=KeyboardOut, b=false, sel=or13, out=verifiedKBD);
+
+        And(a=address[14], b=true, out=notRam);
+        Not(in=notRam, out=isRam);
+        And(a=isRam, b=load, out=loadRam);
+
+        And(a=address[13], b=true, out=isKeyboard);
+        Not(in=isKeyboard, out=notKeyboard);
+        And(a=notRam, b=notKeyboard, out=isScreen);
+        And(a=isScreen, b=load, out=loadScreen);
+
+        RAM16K(in=in, load=loadRam, address=address[0..13], out=RamOut);
+        Screen(in=in, load=loadScreen, address=address[0..12], out=ScreenOut);
+        Keyboard(out=KeyboardOut);
+
+        Mux16(a=ScreenOut, b=verifiedKBD, sel=isKeyboard, out=screenKeyboardMux);
+        Mux16(a=screenKeyboardMux, b=RamOut, sel=isRam, out=out);
 }
