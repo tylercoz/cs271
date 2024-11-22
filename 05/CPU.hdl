@@ -32,5 +32,52 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-	//// Replace this comment with your code.
+        // ~~~ DECODE INSTRUCTIONS ~~~
+        // A/C instruction
+        And(a=instruction[15], b=true, out=isCinstr);
+        Not(in=isCinstr, out=isAinstr);
+
+        // Mnemonic
+        And(a=instruction[12], b=isCinstr, out=loadAbit);
+
+        // Control Bits
+        And(a=instruction[11], b=isCinstr, out=loadZx);
+        And(a=instruction[10], b=isCinstr, out=loadNx);
+        And(a=instruction[9], b=isCinstr, out=loadZy);
+        And(a=instruction[8], b=isCinstr, out=loadNy);
+        And(a=instruction[7], b=isCinstr, out=loadF);
+        And(a=instruction[6], b=isCinstr, out=loadNo);
+
+        // Destination Bits
+        And(a=instruction[5], b=isCinstr, out=instrLoadAReg);
+        Or(a=instrLoadAReg, b=isAinstr, out=loadAReg);
+        And(a=instruction[4], b=isCinstr, out=loadDReg);
+        And(a=instruction[3], b=isCinstr, out=loadMem, out=writeM);
+
+        // Jump Bits
+        And(a=instruction[2], b=isCinstr, out=loadLTbit);
+        And(a=instruction[1], b=isCinstr, out=loadEQbit);
+        And(a=instruction[0], b=isCinstr, out=loadGTbit);
+
+        // Main Logic
+        Mux16(a=instruction, b=ALUOut, sel=isCinstr, out=instrALUmux);
+        ARegister(in=instrALUmux, load=loadAReg, out=Areg, out[0..14]=addressM);
+        Mux16(a=Areg, b=inM, sel=loadAbit, out=AMMux);
+        DRegister(in=ALUOut, load=loadDReg, out=Dreg);
+        ALU(x=Dreg, y=AMMux, zx=loadZx, nx=loadNx, zy=loadZy, ny=loadNy, f=loadF, no=loadNo, out=ALUOut, out=outM, zr=zr, ng=ng);
+        PC(in=Areg, load=jump, inc=inc, reset=reset, out[0..14]=pc);
+
+        // PC Logic
+        And(a=zr, b=loadEQbit, out=JumpEQ);
+        And(a=ng, b=loadLTbit, out=JumpLT);
+
+        Not(in=zr, out=notzr);
+        Not(in=ng, out=notng);
+        And(a=notng, b=notzr, out=pos);
+        And(a=pos, b=loadGTbit, out=JumpGT);
+
+        Or(a=JumpEQ, b=JumpLT, out=JumpLTorEQ);
+        Or(a=JumpLTorEQ, b=JumpGT, out=jump);
+
+        Not(in=jump, out=inc);
 }
