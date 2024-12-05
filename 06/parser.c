@@ -48,8 +48,9 @@ char *strip(char *s){
  * iterate each line in the file and strip whitespace and comments.
  *
  * file: pointer to FILE to parse
+ * instructions: pointer to array that will be filled with instructions by end of function
  *
- * returns: nothing
+ * returns: length of instructions array
  */
  int parse(FILE * file, instruction *instructions) {
 
@@ -205,5 +206,45 @@ void parse_C_instruction(char *line, c_instruction *instr) {
 }
 
 void assemble(const char * file_name, instruction* instructions, int num_instructions) {
+  // Create a new filename = file_name + extension
+  char *extension = ".hack";
+  int new_file_name_length = strlen(file_name) + strlen(extension);
+  char *new_file_name = (char*)malloc(new_file_name_length * sizeof(char));
+  strcpy(new_file_name, file_name);
+  strcat(new_file_name, extension);
 
+  // Create a new file
+  FILE *new_file = fopen(new_file_name, "w");
+
+  // Iterate over instructions
+  for (int i = 0; i < num_instructions; i++) {
+    instr_type type = instructions[i].instruction_type;
+    opcode instruction_opcode;
+    hack_addr variable_addr = 16;
+    if (type == Atype) {
+      if (instructions[i].a.is_addr) {
+        instruction_opcode = instructions[i].a.a_instruction.address;
+      } else {
+        // Lookup symbol in symbol table
+        char *label = instructions[i].a.a_instruction.label;
+        Symbol *sym_label = symtable_find(label);
+        if (symtable_find(label) == NULL) {
+          // This is a variable
+          symtable_insert(label, variable_addr);
+          instruction_opcode = variable_addr;
+          variable_addr++;
+        } else {
+          instruction_opcode = sym_label->addr;
+        }
+      }
+    } else if (type == Ctype) {
+      printf("Ctype");
+    } else if (type == Invalid) {
+      printf("Invalid");
+    } else {
+      printf("Neither A, C, or Invalid.");
+    }
+
+    // Write opcode to file
+  }
 }
