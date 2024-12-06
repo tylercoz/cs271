@@ -82,11 +82,6 @@ char *strip(char *s){
           exit_program(EXIT_INVALID_A_INSTR, line_number, line);
        }
        instr.instruction_type = Atype;
-       if (instr.a.is_addr) {
-         printf("A: %d\n", instr.a.a_instruction.address);
-       } else {
-         printf("A: %s\n", instr.a.a_instruction.label);
-       }
     } else if (is_label(line)) {
       // inst_type = 'L';
       extract_label(line, label);
@@ -114,7 +109,6 @@ char *strip(char *s){
         exit_program(EXIT_INVALID_C_JUMP, line_number, line);
       }
       instr.instruction_type = Ctype;
-      printf("C: d=%d, c=%d, j=%d\n", instr.c.d, instr.c.c, instr.c.j);
     }
     instructions[instr_num++] = instr;
     }
@@ -219,7 +213,7 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
   // Iterate over instructions
   for (int i = 0; i < num_instructions; i++) {
     instr_type type = instructions[i].instruction_type;
-    opcode instruction_opcode;
+    opcode instruction_opcode = 0;
     hack_addr variable_addr = 16;
     if (type == Atype) {
       if (instructions[i].a.is_addr) {
@@ -245,7 +239,7 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
       printf("Neither A, C, or Invalid.");
     }
     // Write opcode to file
-    printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",OPCODE_TO_BINARY(instruction_opcode));
+    printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",OPCODE_TO_BINARY(instruction_opcode));
   }
 }
 
