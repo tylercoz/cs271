@@ -238,13 +238,23 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
         }
       }
     } else if (type == Ctype) {
-      printf("Ctype");
+      instruction_opcode = instruction_to_opcode(instructions[i].c);
     } else if (type == Invalid) {
       printf("Invalid");
     } else {
       printf("Neither A, C, or Invalid.");
     }
-
     // Write opcode to file
+    printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",OPCODE_TO_BINARY(instruction_opcode));
   }
+}
+
+opcode instruction_to_opcode(c_instruction instr) {
+  opcode op = 0;
+  op |= (7 << 13);
+  op |= (instr.a << 12);
+  op |= (instr.c << 6);
+  op |= (instr.d << 3);
+  op |= (instr.j << 0);
+  return op;
 }
