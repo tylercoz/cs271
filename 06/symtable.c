@@ -50,7 +50,7 @@ Symbol *symtable_find(char * key) {
     //move in array until an empty
     while(hashArray[hashIndex] != NULL) {
 
-       if(strcmp(hashArray[hashIndex]->name,key) == 0) {
+       if(strcmp(hashArray[hashIndex]->name, key) == 0) {
             return hashArray[hashIndex];
        }
        //go to next cell

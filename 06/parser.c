@@ -75,15 +75,12 @@ char *strip(char *s){
     if (!*line) {
       continue;
     }
-    // char inst_type = '\0';
     if (is_Atype(line)) {
-      // inst_type = 'A';
       if (!parse_A_instruction(line, &instr.a)){
           exit_program(EXIT_INVALID_A_INSTR, line_number, line);
        }
        instr.instruction_type = Atype;
     } else if (is_label(line)) {
-      // inst_type = 'L';
       extract_label(line, label);
       if (!isalpha(*label)) {
         exit_program(EXIT_INVALID_LABEL, line_number, label);
@@ -92,10 +89,9 @@ char *strip(char *s){
         exit_program(EXIT_SYMBOL_ALREADY_EXISTS, line_number, label);
       }
       strcpy(line, label);
-      symtable_insert(label, instr_num);
+      symtable_insert(line, instr_num);
       continue;
     } else if (is_Ctype(line)) {
-      // inst_type = 'C';
       char tmp_line[MAX_LINE_LENGTH];
       strcpy(tmp_line, line);
       parse_C_instruction(tmp_line, &instr.c);
@@ -111,7 +107,7 @@ char *strip(char *s){
       instr.instruction_type = Ctype;
     }
     instructions[instr_num++] = instr;
-    }
+  }
   return instr_num;
 }
 
@@ -202,19 +198,20 @@ void parse_C_instruction(char *line, c_instruction *instr) {
 void assemble(const char * file_name, instruction* instructions, int num_instructions) {
   // Create a new filename = file_name + extension
   char *extension = ".hack";
-  int new_file_name_length = strlen(file_name) + strlen(extension);
+  int new_file_name_length = strlen(file_name) + strlen(extension) + 1;
   char *new_file_name = (char*)malloc(new_file_name_length * sizeof(char));
   strcpy(new_file_name, file_name);
   strcat(new_file_name, extension);
+
 
   // Create a new file
   FILE *new_file = fopen(new_file_name, "w");
 
   // Iterate over instructions
+  hack_addr variable_addr = 16;
   for (int i = 0; i < num_instructions; i++) {
     instr_type type = instructions[i].instruction_type;
     opcode instruction_opcode = 0;
-    hack_addr variable_addr = 16;
     if (type == Atype) {
       if (instructions[i].a.is_addr) {
         instruction_opcode = instructions[i].a.a_instruction.address;
@@ -222,14 +219,15 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
         // Lookup symbol in symbol table
         char *label = instructions[i].a.a_instruction.label;
         Symbol *sym_label = symtable_find(label);
-        if (symtable_find(label) == NULL) {
+        if (sym_label == NULL) {
           // This is a variable
           symtable_insert(label, variable_addr);
           instruction_opcode = variable_addr;
-          variable_addr++;
+          variable_addr+=1;
         } else {
           instruction_opcode = sym_label->addr;
         }
+        free(instructions[i].a.a_instruction.label);
       }
     } else if (type == Ctype) {
       instruction_opcode = instruction_to_opcode(instructions[i].c);
@@ -239,7 +237,7 @@ void assemble(const char * file_name, instruction* instructions, int num_instruc
       printf("Neither A, C, or Invalid.");
     }
     // Write opcode to file
-    printf("%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",OPCODE_TO_BINARY(instruction_opcode));
+    fprintf(new_file, "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",OPCODE_TO_BINARY(instruction_opcode));
   }
 }
 
