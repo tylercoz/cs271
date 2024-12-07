@@ -10,10 +10,20 @@ Takes in a .asm file containing Hack Assembly and turns it into Hack machine cod
 
 # Dependencies
 
-- C99
+- C compiler
 - Make
 
 # Use
 
+The default compiler is `gcc`. If you don't have `gcc`, you can change the compiler in the `Makefile` in the `CC` option:
+
+```Makefile
+CC = GCC
+```
+
+To run this script:
+
+```bash
 $ make
 $ ./main [file]
+```
